@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>RockPaperScissors</title>
+  <style>
+    body{
+      background-color: rgb(25, 25, 25);
+    }
+    p{
+      color: white;
+    }
+    .cs-title{
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .emoji{
+      height: 50px;
+    }
+    .cs-button{
+      background-color: transparent;
+      border: 3px solid white;
+      width: 120px;
+      height: 120px;
+      border-radius: 60px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .js-result{
+      font-size: 25px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .js-score{
+      margin-top: 60px;
+    }
+    .js-reset,.cs-auto{
+      background-color: white;
+      border: none;
+      font-size: 15px;
+      padding: 8px 15px;
+      cursor: pointer;
+    }
+    .js-dp{
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <p class="cs-title">Rock Paper Scissors</p>
+ 
+ 
+  <button onclick="playrock();" class="cs-button" ><img src="rock-emoji.png" class="emoji"/></button>
+ 
+ 
+  <button onclick="playpaper();" class="cs-button"><img src="paper-emoji.png" class="emoji"/></button>
+
+  
+  <button onclick="playscissors();" class="cs-button"><img src="scissors-emoji.png" class="emoji"/></button>
+  
+ 
+  <p class="js-result"></p>
+  <p class="js-move"></p>
+  <p class="js-score"></p>
+  <p class="js-dp"></p>
+  
+  
+  <button onclick="display(); " class="js-reset">Reset Score</button>
+  
+  
+  <button class="cs-auto" onclick="autoplay(); if(!isplay){document.querySelector('.cs-auto').innerHTML='Stop Playing'; isplay=true;} else{document.querySelector('.cs-auto').innerHTML='Auto Play'; isplay=false;}">Auto Play</button>
+ 
+ 
+ <script>
+
+
+  let isplay=false; 
+  console.log(JSON.parse(localStorage.getItem('score')) ); 
+  let result='';
+  let num=0;
+  let move='';
+  const score=JSON.parse(localStorage.getItem('score')) || {
+      wins:0,
+      loss:0,
+      tie:0
+  }; 
+  let inte;
+  let isautoplay=false;
+  function autoplay(){
+    if(!isautoplay){
+  inte=setInterval(()=>{let random=Math.random();
+    if(random<1/3){playrock();} if(random<2/3){playpaper();} else{playscissors();}
+  },1000); isautoplay=true;}else{clearInterval(inte);isautoplay=false;} }
+
+  function playrock(){
+    let num=Math.random();
+  let result='';
+  let move='';
+  let userchoice='rock';
+  let compchoice='';
+  if(num>=0 && num<1/3){ compchoice='rock';
+    score.tie+=1; 
+    result='Its tie';
+    move='You rock-rock computer';  
+  }
+  else if(num>=1/3 && num<2/3) { compchoice='paper';
+    score.loss+=1;
+    result='You loss';
+    move='You rock-paper Computer';
+  }
+  else if(num>=2/3 && num<=1) { compchoice='scissors';
+    score.wins+=1;
+    result='You win';
+    move='You rock-scissors Computer';
+  }
+  let userimg, compimg;
+  userimg=document.createElement('img');
+  compimg=document.createElement('img');
+  userimg.className='emoji';
+  compimg.className='emoji';
+
+  if(userchoice==='rock')userimg.src= 'rock-emoji.png';
+  if(compchoice==='rock')compimg.src= 'rock-emoji.png';
+  if(userchoice==='paper')userimg.src= 'paper-emoji.png';
+  if(compchoice==='paper')compimg.src= 'paper-emoji.png';
+  if(userchoice==='scissors')userimg.src= 'scissors-emoji.png';
+  if(compchoice==='scissors')compimg.src= 'scissors-emoji.png';
+  localStorage.setItem('score', JSON.stringify(score));
+  document.querySelector('.js-score').innerHTML= `wins:${score.wins} loss:${score.loss} Tie:${score.tie}`;
+  document.querySelector('.js-result').innerHTML=result;
+  document.querySelector('.js-move').innerHTML='';
+  document.querySelector('.js-move').append('you',userimg,compimg,'computer');
+  }
+
+
+  
+  
+  
+  function playscissors() {
+    let num=Math.random();
+  let result='';
+  let move='';
+  let userchoice='scissors';
+  let compchoice='';
+  if(num>=0 && num<1/3){ compchoice='rock';
+    score.loss+=1;
+    result='You loss';
+    move='You scissors-rock Computer';
+  }
+  else if(num>=1/3 && num<2/3) { compchoice='paper';
+    score.wins+=1;
+    result='You win';
+    move='You scissors-paper Computer';
+  }
+  else if(num>=2/3 && num<=1) { compchoice='scissors';
+    score.tie+=1;
+    result='Its tie';
+    move=`You scissors-scissors Computer`;
+  }
+  let userimg, compimg;
+  userimg=document.createElement('img');
+  compimg=document.createElement('img');
+  userimg.className='emoji';
+  compimg.className='emoji';
+
+  if(userchoice==='rock')userimg.src= 'rock-emoji.png';
+  if(compchoice==='rock')compimg.src= 'rock-emoji.png';
+  if(userchoice==='paper')userimg.src= 'paper-emoji.png';
+  if(compchoice==='paper')compimg.src= 'paper-emoji.png';
+  if(userchoice==='scissors')userimg.src= 'scissors-emoji.png';
+  if(compchoice==='scissors')compimg.src= 'scissors-emoji.png';
+  localStorage.setItem('score', JSON.stringify(score));
+  document.querySelector('.js-score').innerHTML= `wins:${score.wins} loss:${score.loss} Tie:${score.tie}`;
+  document.querySelector('.js-result').innerHTML=result;
+  document.querySelector('.js-move').innerHTML='';
+  document.querySelector('.js-move').append('you',userimg,compimg,'computer');
+  }
+
+  
+  
+  
+  function playpaper(){
+    let num=Math.random();
+  let result='';
+  let move='';
+  let userchoice='paper';
+  let compchoice='';
+  if(num>=0 && num<1/3) { compchoice='rock';
+    score.wins+=1;
+    result='You win';
+    move='You paper-rock Computer';
+  }
+  else if(num>=1/3 && num<2/3) { compchoice='paper';
+    score.tie+=1; 
+    result='Its tie';
+    move='You paper-paper Computer';
+  }
+  else if(num>=2/3 && num<=1) { compchoice='scissors';
+    score.loss+=1;
+    result='You loss';
+    move='You paper-scissors Computer';
+  }
+  let userimg, compimg;
+  userimg=document.createElement('img');
+  compimg=document.createElement('img');
+  userimg.className='emoji';
+  compimg.className='emoji';
+
+  if(userchoice==='rock')userimg.src= 'rock-emoji.png';
+  if(compchoice==='rock')compimg.src= 'rock-emoji.png';
+  if(userchoice==='paper')userimg.src= 'paper-emoji.png';
+  if(compchoice==='paper')compimg.src= 'paper-emoji.png';
+  if(userchoice==='scissors')userimg.src= 'scissors-emoji.png';
+  if(compchoice==='scissors')compimg.src= 'scissors-emoji.png';
+  localStorage.setItem('score', JSON.stringify(score));
+  document.querySelector('.js-score').innerHTML= `wins:${score.wins} loss:${score.loss} Tie:${score.tie}`;
+  document.querySelector('.js-result').innerHTML=result;
+  document.querySelector('.js-move').innerHTML='';
+  document.querySelector('.js-move').append('you',userimg,compimg,'computer');
+  }
+  
+  
+  
+  
+  function reset(){
+    score.wins=0;score.loss=0;score.tie=0;
+    console.log(localStorage.removeItem('score'));document.querySelector('.js-score').innerHTML= `wins:${score.wins} loss:${score.loss} Tie:${score.tie}`;
+    document.querySelector('.js-result').innerHTML=result;
+  }
+
+
+  function display(){
+     document.querySelector('.js-dp').innerHTML=`Are you sure you want to reset the score?
+     <button class="js-yes-bt" onclick="reset();document.querySelector('.js-dp').innerHTML='';">Yes</button>
+     <button class="js-no-bt" onclick="document.querySelector('.js-dp').innerHTML='';">No</button>
+     `;
+  }
+  
+  
+  
+  
+  document.body.addEventListener('keydown',(event)=>{if(event.key==='r'){playrock();}if(event.key==='p'){playpaper();}if(event.key==='s'){playscissors();} if(event.key==='a'){autoplay(); if(!isplay){document.querySelector('.cs-auto').innerHTML='Stop Playing'; isplay=true;} else{document.querySelector('.cs-auto').innerHTML='Auto Play'; isplay=false;} } if(event.key==='Backspace'){reset();}});
+  
+  
+  document.querySelector('.js-score').innerHTML= `wins:${score.wins} loss:${score.loss} Tie:${score.tie}`;
+  
+  
+  
+  document.querySelector('.js-result').innerHTML=result;
+  
+  
+  document.querySelector('.js-move').innerHTML=move;
+  </script>
+</body>
+</html>
